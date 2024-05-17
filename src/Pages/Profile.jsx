@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { RiAccountCircleFill } from "react-icons/ri";
 import { IoIosArrowBack } from "react-icons/io";
+import dayjs from "dayjs";
 
 function ProfilePage() {
   const [showDetails, setShowDetails] = useState(false);
@@ -14,8 +15,12 @@ function ProfilePage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!token) Navigate("/login"); // Redirect ke halaman login jika tidak ada token
+    if (!token) {
+      alert("Perlu login untuk akses halaman ini.");
+      Navigate("/login");
+    }
     dispatch(fetchUserData(token));
+    window.scrollTo({ top: 0 });
   }, []);
 
   return (
@@ -62,8 +67,12 @@ function ProfilePage() {
                   USER DETAILS{" "}
                 </p>
                 <p className="text-gray-700">
-                  <strong>Created:</strong> {userData?.createdAt}
+                  <strong>Created:</strong>{" "}
+                  {dayjs(userData?.createdAt).format("YYYY-MM-DD")}
                 </p>
+                {/* <p className="text-gray-700">
+                  <strong>Created:</strong> {userData?.createdAt}
+                </p> */}
                 <p className="text-gray-700">
                   <strong>Email:</strong> {userData?.email}
                 </p>

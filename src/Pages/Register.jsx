@@ -9,6 +9,8 @@ import { registerUser } from "../redux/actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
 import bgr from "../assets/bgr.jpg";
 import { setToken } from "../redux/reducers/authReducer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -165,14 +167,14 @@ const Register = () => {
     // Validasi format email
     if (!emailRegex.test(email)) {
       setEmailError("Format email tidak valid");
-      alert("Registrasi gagal: Format email tidak valid");
+      toast.error("Registrasi gagal: Format email tidak valid");
       return;
     }
 
     // Validasi panjang email
     if (email.length > 50) {
       setEmailError("Panjang email tidak boleh lebih dari 50 karakter");
-      alert(
+      toast.error(
         "Registrasi gagal: Panjang email tidak boleh lebih dari 50 karakter"
       );
       return;
@@ -181,7 +183,7 @@ const Register = () => {
     // Validasi domain email
     if (!validEmailDomain.test(email)) {
       setEmailError("Email harus memiliki domain yang valid");
-      alert(
+      toast.error(
         "Registrasi gagal: Domain email tidak valid. Silakan periksa kembali."
       );
       return;
@@ -190,20 +192,24 @@ const Register = () => {
     // Validasi panjang nama
     if (name.length < 3 || name.length > 20) {
       setNameError("Nama harus memiliki 3 hingga 20 karakter");
-      alert("Registrasi gagal: Nama harus memiliki 3 hingga 20 karakter");
+      toast.error("Registrasi gagal: Nama harus memiliki 3 hingga 20 karakter");
       return;
     }
 
     // Validasi nama sebelum melakukan permintaan registrasi
     if (!/^[a-zA-Z\s]*$/.test(name)) {
-      alert("Registrasi gagal: Nama hanya boleh mengandung huruf dan spasi.");
+      toast.error(
+        "Registrasi gagal: Nama hanya boleh mengandung huruf dan spasi."
+      );
       return;
     }
 
     // Validasi panjang sandi
     if (password.length < 4 || password.length > 60) {
       setPasswordError("Sandi harus berisi antara 4 hingga 60 karakter");
-      alert("Registrasi gagal: Sandi harus berisi antara 4 hingga 60 karakter");
+      toast.error(
+        "Registrasi gagal: Sandi harus berisi antara 4 hingga 60 karakter"
+      );
       return;
     }
 
@@ -212,7 +218,7 @@ const Register = () => {
       setPasswordError(
         "Sandi harus mengandung setidaknya satu huruf besar, satu huruf kecil, dan satu angka. Pastikan juga untuk tidak menggunakan karakter spesial."
       );
-      alert(
+      toast.error(
         "Registrasi gagal: Sandi harus mengandung setidaknya satu huruf besar, satu huruf kecil, dan satu angka. Pastikan juga untuk tidak menggunakan karakter spesial."
       );
       return;
@@ -220,7 +226,7 @@ const Register = () => {
 
     // Validasi apakah password dan konfirmasi password sama
     if (password !== confirmPassword) {
-      alert(
+      toast.error(
         "Registrasi gagal: Konfirmasi password tidak sesuai dengan password."
       );
       return;
@@ -250,6 +256,7 @@ const Register = () => {
         position: "relative",
       }}
     >
+      <ToastContainer /> {/* Ini adalah komponen ToastContainer */}
       <div className="absolute bg-white opacity-80 py-12 shadow sm:rounded-lg flex flex-col sm:flex-row items-stretch justify-center gap-8">
         <form
           className="h-full w-full sm:w-3/4 lg:w-2/4 max-w-xl object-cover sm:rounded-lg mx-auto"

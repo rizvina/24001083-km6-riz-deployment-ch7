@@ -1,10 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FaPlay } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { playTrailer, fetchMovieDetail } from "../redux/actions/movieActions";
+import {
+  playTrailer,
+  fetchMovieDetail,
+  fetchMovieCredits,
+} from "../redux/actions/movieActions";
 import { IoArrowBack } from "react-icons/io5";
-import { setMovieDetail } from "../redux/reducers/movieReducer";
+import {
+  setMovieCredits,
+  setMovieDetail,
+} from "../redux/reducers/movieReducer";
 
 const API_KEY = "1258836cba49adb1a3a6859aaf9c2aed";
 
@@ -13,23 +20,20 @@ export default function MovieDetail() {
   const location = useLocation();
   const dispatch = useDispatch();
   const token = useSelector((state) => state?.auth?.token);
+  const movieCredits = useSelector((state) => state?.movie?.movieCredits);
   const movieDetail = useSelector((state) => state?.movie?.movieDetail);
-  console.log(
-    "state",
-    useSelector((state) => state)
-  );
 
   useEffect(() => {
+    dispatch(setMovieDetail(null));
+    dispatch(setMovieCredits(null));
     dispatch(fetchMovieDetail(location?.state?.id));
+    dispatch(fetchMovieCredits(location.state.id));
+    window.scrollTo({ top: 0 }); // Menggulir halaman ke atas dengan efek halus
     if (!token) {
       alert("Perlu login untuk akses halaman ini.");
       navigate("/login");
     }
-  }, []);
-
-  useEffect(() => {
-    dispatch(setMovieDetail(""));
-  }, [dispatch]); // Memuat ulang detail film saat ID berubah
+  }, [dispatch, location.state.id, token, navigate]);
 
   // Function to go back
   const handleBack = () => {
@@ -123,6 +127,37 @@ export default function MovieDetail() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div className="mt-8 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 backdrop-blur-sm">
+          <h2 className="text-5xl font-extrabold mb-10 text-white">
+            ALL CASTS
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            {movieCredits?.cast?.map((credit) => (
+              <div
+                key={credit.id}
+                className="bg-red-700 rounded-lg overflow-hidden shadow-lg"
+              >
+                {credit.profile_path ? (
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500/${credit.profile_path}`}
+                    alt={credit.name}
+                    className="w-full h-64 object-cover rounded-t-lg"
+                  />
+                ) : (
+                  <div className="w-full h-64 bg-gray-300 flex justify-center items-center">
+                    <span className="text-white">No Image Available</span>
+                  </div>
+                )}
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    {credit.name}
+                  </h3>
+                  <p className="text-base text-gray-300">{credit.character}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

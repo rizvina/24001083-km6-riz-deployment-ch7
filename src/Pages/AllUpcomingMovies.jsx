@@ -13,6 +13,8 @@ import {
   setQuery,
   setSortBy,
 } from "../redux/reducers/upcomingReducer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const API_KEY = "1258836cba49adb1a3a6859aaf9c2aed";
 
@@ -84,7 +86,11 @@ const AllUpcomingMovies = () => {
   useEffect(() => {
     dispatch(getupComing(1));
     dispatch(setCurrentPage(1));
-    if (!token) navigate("/login");
+    window.scrollTo({ top: 0 }); // Menggulir halaman ke atas dengan efek halus
+    if (!token) {
+      alert("Perlu login untuk akses halaman ini.");
+      navigate("/login");
+    }
   }, [dispatch, token]);
 
   useEffect(() => {
@@ -96,7 +102,7 @@ const AllUpcomingMovies = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim() === "") {
-      alert("Silakan masukkan judul di pencarian.");
+      toast.error("Silakan masukkan judul di pencarian.");
       return;
     }
     dispatch(setCurrentPage(1)); // Reset currentPage to 1 for new search
@@ -132,12 +138,9 @@ const AllUpcomingMovies = () => {
       dispatch(getupComing(newPage));
     }
     // Atur fokus kembali ke elemen pertama setelah memuat data baru
-    window.scrollTo({ top: 0, behavior: "smooth" }); // Menggulir halaman ke atas dengan efek halus
+    window.scrollTo({ top: 0 }); // Menggulir halaman ke atas dengan efek halus
   };
 
-  // const handleSortChange = (e) => {
-  //   dispatch(setSortBy(e.target.value));
-  // };
   const handleSortChange = (e) => {
     const newSortBy = e.target.value;
     dispatch(setSortBy(newSortBy));
@@ -164,6 +167,7 @@ const AllUpcomingMovies = () => {
   return (
     <div className="bg-red-800">
       <Navbar />
+      <ToastContainer /> {/* Ini adalah komponen ToastContainer */}
       <div className="container mx-auto p-4">
         <div className="mb-40"></div>
         <div className="flex justify-between items-center mb-6">

@@ -91,14 +91,14 @@ const PeopleCard = ({ person }) => {
   const navigate = useNavigate();
   console.log("persom", person);
 
-  // const handleClick = () => {
-  //   navigate("/person-detail", { state: { id: person.id } });
-  // };
+  const handleClick = () => {
+    navigate("/person-detail", { state: { id: person.id } });
+  };
 
   return (
     <div
       className="relative overflow-hidden rounded-lg shadow-lg"
-      // onClick={handleClick}
+      onClick={handleClick}
     >
       {person.profile_path && (
         <img
@@ -155,7 +155,7 @@ const Home = () => {
     };
     fetchData();
     // Atur guliran ke bagian atas ketika komponen mount
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0 });
   }, []);
 
   return (

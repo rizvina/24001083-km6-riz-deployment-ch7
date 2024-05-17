@@ -7,7 +7,6 @@ import popularReducers from "./popularReducers";
 import topReducers from "./topReducers";
 import upcomingReducer from "./upcomingReducer";
 import trendingReducer from "./trendingReducer";
-import peopleReducer from "./peopleReducer";
 
 export default combineReducers({
   auth: authReducer,
@@ -17,5 +16,4 @@ export default combineReducers({
   top: topReducers,
   up: upcomingReducer,
   trend: trendingReducer,
-  people: peopleReducer,
 });

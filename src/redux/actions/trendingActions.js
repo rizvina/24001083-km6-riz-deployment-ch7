@@ -1,5 +1,7 @@
 import axios from "axios";
 import { setMovieId, setTrending } from "../reducers/trendingReducer";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const getTrendMovies = (currentPage, timeWindow) => async (dispatch) => {
   const API_KEY = "1258836cba49adb1a3a6859aaf9c2aed";
@@ -32,7 +34,7 @@ export const searchMovies = (query, currentPage) => async (dispatch) => {
     // Memeriksa apakah ada hasil yang ditemukan
     if (response.data.results.length === 0) {
       // Menampilkan alert jika tidak ada hasil yang ditemukan
-      alert("Tidak ada film dengan judul ini");
+      toast.error("Tidak ada film dengan judul ini");
     } else {
       dispatch(setTrending(response.data.results));
     }

@@ -13,6 +13,8 @@ import {
   setQuery,
   setTimeWindow,
 } from "../redux/reducers/trendingReducer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const API_KEY = "1258836cba49adb1a3a6859aaf9c2aed";
 
@@ -82,40 +84,37 @@ const AllTrendingMovies = () => {
   const timeWindow = useSelector((state) => state.trend.timeWindow);
 
   useEffect(() => {
+    window.scrollTo({ top: 0 }); // Menggulir halaman ke atas dengan efek halus
     if (query.trim()) {
-      dispatch(searchMovies(query, currentPage));
+      dispatch(searchMovies(query, 1));
     } else {
-      dispatch(getTrendMovies(currentPage, timeWindow));
+      dispatch(getTrendMovies(1, timeWindow));
     }
-  }, [dispatch, currentPage, timeWindow, query]);
+  }, [dispatch, timeWindow, query]);
 
   useEffect(() => {
-    if (!token) navigate("/login");
-
-    dispatch(setCurrentPage(1));
-    dispatch(setQuery(""));
-  }, [dispatch, token]);
+    if (!token) {
+      alert("Perlu login untuk akses halaman ini.");
+      navigate("/login");
+    } else {
+      dispatch(setCurrentPage(1));
+      dispatch(setQuery(""));
+    }
+  }, [dispatch, token, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim() === "") {
-      alert("Silahkan masukkan judul di pencarian.");
+      toast.error("Silahkan masukkan judul di pencarian.");
       return;
     }
     dispatch(setCurrentPage(1)); // Reset currentPage to 1 for new search
     dispatch(searchMovies(query, 1));
   };
 
-  // const handleChange = (e) => {
-  //   if (e.target.value === "") {
-  //     dispatch(getTrendMovies(1)); // Menghapus hasil pencarian sebelumnya
-  //   }
-  //   dispatch(setQuery(e.target.value)); // Mengatur nilai pencarian yang baru
-  // };
-
   const handleChange = (e) => {
     if (e.target.value === "") {
-      dispatch(setCurrentPage);
+      dispatch(setCurrentPage(1));
       dispatch(getTrendMovies(1)); // Menghapus hasil pencarian sebelumnya
     }
     dispatch(setQuery(e.target.value)); // Mengatur nilai pencarian yang baru
@@ -138,12 +137,13 @@ const AllTrendingMovies = () => {
       dispatch(getTrendMovies(newPage, timeWindow));
     }
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0 });
   };
 
   return (
     <div className="bg-red-800">
       <Navbar />
+      <ToastContainer /> {/* Ini adalah komponen ToastContainer */}
       <div className="container mx-auto p-4">
         <div className="mb-40"></div>
         <div className="flex justify-between items-center mb-6">

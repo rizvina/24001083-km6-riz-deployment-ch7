@@ -1,6 +1,8 @@
 import axios from "axios";
 import { setIsLoggedIn, setToken, setuserData } from "../reducers/authReducer";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const registerLoginWithGoogleAction =
   (accessToken, navigate) => async (dispatch) => {
@@ -18,11 +20,11 @@ export const registerLoginWithGoogleAction =
       navigate("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        alert(error.message);
+        toast.error(error.message);
         return;
       }
       console.error("Error registering/login with Google:", error);
-      alert(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -31,7 +33,7 @@ export const registerUser =
     try {
       // Memeriksa apakah kata sandi cocok
       if (password !== confirmPassword) {
-        return alert(
+        return toast.error(
           "Registrasi gagal: Konfirmasi password tidak sesuai dengan password."
         );
       }
@@ -60,11 +62,11 @@ export const registerUser =
           error.response.data &&
           error.response.data.message === "User has already registered"
         ) {
-          alert(
+          toast.error(
             "Registrasi gagal: Email yang Anda masukkan sudah terdaftar. Silakan gunakan email lain."
           );
         } else {
-          alert(
+          toast.error(
             "Registrasi gagal: Permintaan tidak valid. Pastikan data yang Anda masukkan benar."
           );
         }
@@ -90,7 +92,7 @@ export const fetchUserData = (token) => async (dispatch) => {
     const userData = response.data.data;
     dispatch(setuserData(userData));
   } catch (error) {
-    alert(error.message);
+    toast.error(error.message);
   }
 };
 
@@ -107,7 +109,7 @@ export const getUserData = (setIsLoggedIn) => async (dispatch) => {
       console.log("Failed to fetch user data");
     }
   } catch (error) {
-    alert(error.message);
+    toast.error(error.message);
   }
 };
 
@@ -152,9 +154,9 @@ export const login = (email, password, navigate) => async (dispatch) => {
   } catch (error) {
     // Menangani kesalahan jika terjadi saat proses login
     if (error.response && error.response.status === 401) {
-      alert("Email atau kata sandi yang dimasukkan salah");
+      toast.error("Email atau kata sandi yang dimasukkan salah");
     } else {
-      alert("Terjadi kesalahan saat melakukan login. Mohon coba lagi.");
+      toast.error("Terjadi kesalahan saat melakukan login. Mohon coba lagi.");
     }
   }
 };

@@ -4,7 +4,6 @@ const initialState = {
   movies: [],
   movieID: null,
   currentPage: 1,
-  // totalPages: 1,
   query: "",
   sortBy: "latest, oldest, title-asc, title-desc",
 };
@@ -15,7 +14,6 @@ const movieSlice = createSlice({
   reducers: {
     setAllNowPlaying: (state, action) => {
       state.movies = action.payload; // Mengubah movies bukan allnowplaying
-      // alert("sip");
     },
     setMovieId: (state, action) => {
       state.movieID = action.payload; // Mengubah movieID

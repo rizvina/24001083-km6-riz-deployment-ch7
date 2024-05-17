@@ -1,0 +1,35 @@
+/* AboutUs.css */
+
+.about-us-title {
+  background-color: #333;
+  color: white;
+  padding: 20px 30px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.about-us-content {
+  display: flex;
+  border: 2px solid #333;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.about-us-image {
+  padding: 100px;
+}
+
+.about-us-image img {
+  width: 500px; /* Ubah lebar gambar sesuai kebutuhan */
+  height: 500px; /* Biarkan tinggi gambar mengikuti proporsi */
+  border-radius: 10px;
+}
+
+.about-us-text {
+  padding: 20px;
+}
+
+.about-us-text p {
+  margin-bottom: 20px;
+  font-size: 20px; /* Ubah ukuran teks sesuai kebutuhan */
+}

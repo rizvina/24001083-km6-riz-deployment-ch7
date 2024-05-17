@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/actions/authActions";
 import bgr from "../assets/bgr.jpg";
 import { setToken } from "../redux/reducers/authReducer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -102,28 +104,34 @@ const Login = () => {
     // Validasi format email
     if (!emailRegex.test(email)) {
       setEmailError("Format email tidak valid");
-      alert("Login gagal: Format email tidak valid");
+      toast.error("Login gagal: Format email tidak valid");
       return;
     }
 
     // Validasi panjang email
     if (email.length > 50) {
       setEmailError("Panjang email tidak boleh lebih dari 50 karakter");
-      alert("Login gagal: Panjang email tidak boleh lebih dari 50 karakter");
+      toast.error(
+        "Login gagal: Panjang email tidak boleh lebih dari 50 karakter"
+      );
       return;
     }
 
     // Validasi domain email
     if (!validEmailDomain.test(email)) {
       setEmailError("Email harus memiliki domain yang valid");
-      alert("Login gagal: Domain email tidak valid. Silakan periksa kembali.");
+      toast.error(
+        "Login gagal: Domain email tidak valid. Silakan periksa kembali."
+      );
       return;
     }
 
     // Validasi panjang sandi
     if (password.length < 4 || password.length > 60) {
       setPasswordError("Sandi harus berisi antara 4 hingga 60 karakter");
-      alert("Login gagal: Sandi harus berisi antara 4 hingga 60 karakter");
+      toast.error(
+        "Login gagal: Sandi harus berisi antara 4 hingga 60 karakter"
+      );
       return;
     }
 
@@ -132,7 +140,7 @@ const Login = () => {
       setPasswordError(
         "Sandi harus mengandung setidaknya satu huruf besar, satu huruf kecil, dan satu angka. Pastikan juga untuk tidak menggunakan karakter spesial."
       );
-      alert(
+      toast.error(
         "Login gagal: Sandi harus mengandung setidaknya satu huruf besar, satu huruf kecil, dan satu angka. Pastikan juga untuk tidak menggunakan karakter spesial."
       );
       return;
@@ -162,20 +170,13 @@ const Login = () => {
         position: "relative",
       }}
     >
+      <ToastContainer /> {/* Ini adalah komponen ToastContainer */}
       <div className="absolute bg-white opacity-80 py-12 shadow sm:rounded-lg flex flex-col sm:flex-row items-stretch justify-center gap-8">
         <form
           className="h-full w-full sm:w-3/4 lg:w-2/4 max-w-xl object-cover sm:rounded-lg mx-auto"
           style={{ height: "auto", width: "500px" }}
           onSubmit={handleSubmit}
         >
-          {/* <form
-          className="h-full w-full sm:w-3/4 lg:w-2/4 max-w-xl object-cover sm:rounded-lg mx-auto"
-          style={{ height: "auto", width: "500px" }}
-          onSubmit={(event) => {
-            event.preventDefault(); // Menambahkan preventDefault di sini
-            handleSubmit(event);
-          }}
-        > */}
           <h2 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">
             Login to your account
           </h2>

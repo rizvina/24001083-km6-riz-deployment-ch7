@@ -117,10 +117,6 @@ const Navbar = () => {
                     </div>
                   )}
                 </div>
-                {/* <div className="flex items-center px-4 mt-4 mr-4">
-                  {" "}
-                  <RiAccountCircleFill className="text-white text-lg lg:text-3xl" />{" "}
-                </div> */}
                 <div className="flex items-center px-4 mt-4 mr-4">
                   <Link to="/profile">
                     <RiAccountCircleFill className="text-white text-lg lg:text-3xl" />

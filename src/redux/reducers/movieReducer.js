@@ -13,6 +13,8 @@ const initialState = {
   movieDetail: null,
   currentPage: 1,
   query: "",
+  personDetail: null,
+  movieCredits: [],
 };
 
 const movieSlice = createSlice({
@@ -52,6 +54,12 @@ const movieSlice = createSlice({
     setQuery: (state, action) => {
       state.query = action.payload;
     },
+    setPersonDetail: (state, action) => {
+      state.personDetail = action.payload;
+    },
+    setMovieCredits: (state, action) => {
+      state.movieCredits = action.payload;
+    },
   },
 });
 
@@ -68,6 +76,8 @@ export const {
   setMovieDetail,
   setCurrentPage,
   setQuery,
+  setPersonDetail,
+  setMovieCredits,
 } = movieSlice.actions;
 
 export default movieSlice.reducer;

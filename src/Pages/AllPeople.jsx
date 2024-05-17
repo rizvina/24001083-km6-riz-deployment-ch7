@@ -4,25 +4,21 @@ import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 import { useNavigate } from "react-router-dom";
 import { fetchpeople, searchPerson } from "../redux/actions/movieActions";
-import {
-  setCurrentPage,
-  setPeople,
-  setQuery,
-} from "../redux/reducers/movieReducer";
-// import { getAllPeople } from "../redux/actions/peopleActions";
+import { setCurrentPage, setQuery } from "../redux/reducers/movieReducer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PeopleCard = ({ person }) => {
   const navigate = useNavigate();
-  console.log("persom", person);
 
-  // const handleClick = () => {
-  //   navigate("/person-detail", { state: { id: person.id } });
-  // };
+  const handleClick = () => {
+    navigate("/person-detail", { state: { id: person.id } });
+  };
 
   return (
     <div
       className="relative overflow-hidden rounded-lg shadow-lg"
-      // onClick={handleClick}
+      onClick={handleClick}
     >
       {person.profile_path && (
         <img
@@ -60,12 +56,15 @@ const AllPeople = () => {
   const query = useSelector((state) => state?.movie?.query);
   const token = useSelector((state) => state.auth.token);
   const people = useSelector((state) => state?.movie?.people);
-  console.log("people23", people);
 
   useEffect(() => {
-    dispatch(fetchpeople(currentPage)); // currentPage disini harus diambil dari state Redux atau dihitung sesuai dengan kebutuhan
-    if (!token) navigate("/login");
-  }, [dispatch, token, currentPage]);
+    dispatch(fetchpeople(1)); // currentPage disini harus diambil dari state Redux atau dihitung sesuai dengan kebutuhan
+    window.scrollTo({ top: 0 }); // Menggulir halaman ke atas dengan efek halus
+    if (!token) {
+      alert("Perlu login untuk akses halaman ini.");
+      navigate("/login");
+    }
+  }, [dispatch, token]);
 
   useEffect(() => {
     dispatch(setCurrentPage(1)); // Reset currentPage to 1 when clearing search
@@ -75,7 +74,7 @@ const AllPeople = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim() === "") {
-      alert("Silahkan masukkan judul di pencarian.");
+      toast.error("Silahkan masukkan nama di pencarian.");
       return;
     }
     dispatch(setCurrentPage(1)); // Reset currentPage to 1 for new search
@@ -110,12 +109,13 @@ const AllPeople = () => {
       dispatch(fetchpeople(newPage)); // Perhatikan bahwa Anda perlu mengirimkan nomor halaman baru ke aksi fetchpeople
     }
     // Atur fokus kembali ke elemen pertama setelah memuat data baru
-    window.scrollTo({ top: 0, behavior: "smooth" }); // Menggulir halaman ke atas dengan efek halus
+    window.scrollTo({ top: 0 }); // Menggulir halaman ke atas dengan efek halus
   };
 
   return (
     <div className="bg-red-800">
       <Navbar />
+      <ToastContainer /> {/* Ini adalah komponen ToastContainer */}
       <div className="container mx-auto p-4">
         <div className="mb-40 mt-20"> </div>
         <div className="flex justify-between items-center mb-6">
@@ -123,7 +123,7 @@ const AllPeople = () => {
             <form onSubmit={handleSubmit} className="flex justify-start">
               <input
                 type="text"
-                placeholder="Search Movie"
+                placeholder="Search Name"
                 value={query}
                 onChange={handleChange}
                 className="rounded-xl h-8 bg-[#3a3333] text-white w-96 px-2"

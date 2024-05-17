@@ -10,7 +10,11 @@ import {
   setTrendingMovies,
   setPeople,
   setCurrentPage,
+  setPersonDetail,
+  setMovieCredits,
 } from "../reducers/movieReducer";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const fetchPopularMovies = () => async (dispatch) => {
   const API_KEY = "1258836cba49adb1a3a6859aaf9c2aed";
@@ -79,20 +83,6 @@ export const fetchTrendingMovies = () => async (dispatch) => {
   }
 };
 
-// export const fetchpeople = (page) => async (dispatch) => {
-//   const API_KEY = "1258836cba49adb1a3a6859aaf9c2aed";
-//   try {
-//     const response = await axios.get(
-//       `https://api.themoviedb.org/3/person/popular?api_key=${API_KEY}&language=en-US&page=1`
-//       // // `https://api.themoviedb.org/3/person/popular?api_key=${API_KEY}&language=en-US&page=${currentPage}`
-//       // `https://api.themoviedb.org/3/person/popular?api_key=${API_KEY}&language=en-US&page=${page}`
-//     );
-//     dispatch(setPeople(response.data.results));
-//   } catch (error) {
-//     console.error("Error fetching upcomigs movies: ", error);
-//   }
-// };
-
 export const fetchpeople = (page) => async (dispatch) => {
   const API_KEY = "1258836cba49adb1a3a6859aaf9c2aed";
   try {
@@ -104,33 +94,6 @@ export const fetchpeople = (page) => async (dispatch) => {
     console.error("Error fetching popular people: ", error);
   }
 };
-
-// export const fetchpeople = (page) => async (dispatch) => {
-//   const API_KEY = "1258836cba49adb1a3a6859aaf9c2aed";
-//   try {
-//     const response = await axios.get(
-//       `https://api.themoviedb.org/3/person/popular?api_key=${API_KEY}&language=en-US&page=1`
-//       // // `https://api.themoviedb.org/3/person/popular?api_key=${API_KEY}&language=en-US&page=${currentPage}`
-//       // `https://api.themoviedb.org/3/person/popular?api_key=${API_KEY}&language=en-US&page=${page}`
-//     );
-//     dispatch(setPeople(response.data.results));
-//   } catch (error) {
-//     console.error("Error fetching upcomigs movies: ", error);
-//   }
-// };
-
-// export const fetchpeople = (page) => async (dispatch) => {
-//   const API_KEY = "1258836cba49adb1a3a6859aaf9c2aed";
-//   try {
-//     const response = await axios.get(
-//       `https://api.themoviedb.org/3/person/popular?api_key=${API_KEY}&page=${page}&language=en-US`
-//     );
-//     dispatch(setPeople(response.data.results));
-//     dispatch(setCurrentPage(page));
-//   } catch (error) {
-//     console.error("Error fetching people: ", error);
-//   }
-// };
 
 export const fetchMovieDetail = (movieId) => {
   const API_KEY = "1258836cba49adb1a3a6859aaf9c2aed";
@@ -176,6 +139,21 @@ export const selectMovie = (movieId) => async (dispatch) => {
   }
 };
 
+export const fetchPersonDetail = (personId) => {
+  const API_KEY = "1258836cba49adb1a3a6859aaf9c2aed";
+
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/person/${personId}?api_key=${API_KEY}&language=en-US`
+      );
+      dispatch(setPersonDetail(response.data));
+    } catch (error) {
+      console.error("Error fetching movie detail: ", error);
+    }
+  };
+};
+
 export const searchPerson = (query, page) => async (dispatch) => {
   try {
     const API_KEY = "1258836cba49adb1a3a6859aaf9c2aed";
@@ -188,7 +166,7 @@ export const searchPerson = (query, page) => async (dispatch) => {
     // Memeriksa apakah ada hasil yang ditemukan
     if (response.data.results.length === 0) {
       // Menampilkan alert jika tidak ada hasil yang ditemukan
-      alert("Tidak ada person dengan nama ini");
+      toast.error("Tidak ada person dengan nama ini");
     } else {
       // Set hasil pencarian sebagai daftar film yang sedang tayang menggunakan action creator setAllNowPlaying
       dispatch(setPeople(response.data.results));
@@ -198,4 +176,20 @@ export const searchPerson = (query, page) => async (dispatch) => {
     // Atau bisa juga menangani error fetching data dengan mengirim action creator yang mengatur state untuk menampilkan pesan ke pengguna
     // dispatch(setSearchError("Error fetching data. Please try again later."));
   }
+};
+
+export const fetchMovieCredits = (movieId) => {
+  const API_KEY = "1258836cba49adb1a3a6859aaf9c2aed";
+
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${API_KEY}`
+      );
+      dispatch(setMovieCredits(response.data));
+      console.log("response movieCredits", response);
+    } catch (error) {
+      console.error("Error fetching movie credits: ", error);
+    }
+  };
 };

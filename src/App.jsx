@@ -17,6 +17,10 @@ import Register from "./Pages/Register";
 import Profile from "./Pages/Profile";
 import AllTrendingMovies from "./Pages/AllTrendingMovies";
 import AllPeople from "./Pages/AllPeople";
+import PersonDetail from "./Pages/PersonDetail";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AboutUs from "./Components/AboutUs";
 
 function App() {
   return (
@@ -31,11 +35,15 @@ function App() {
         <Route path="/all-top-rated" element={<AllTopRatedMovies />} />
         <Route path="/all-now-playing" element={<AllNowPlayingMovies />} />
         <Route path="/movie-detail" element={<MovieDetail />} />
+        <Route path="/person-detail" element={<PersonDetail />} />
         <Route path="/all-popular-movies" element={<AllPopularMovies />} />
         <Route path="/all-people" element={<AllPeople />} />
         <Route path="/all-upcoming-movies" element={<AllUpcomingMovies />} />
         <Route path="/all-trending-movies" element={<AllTrendingMovies />} />
+        <Route path="/about-us" element={<AboutUs />} />
       </Routes>
+      <ToastContainer />{" "}
+      {/* Tempatkan di sini untuk memastikan toast muncul di seluruh aplikasi */}
     </Router>
   );
 }
